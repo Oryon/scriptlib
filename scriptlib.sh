@@ -9,7 +9,7 @@ function scl_cmd_add () {
 		return 0
 	fi
 	local _scl_str=""
-	local _scl_last=$(( "$#" - 1 ))
+	local _scl_last=$(( $# - 1 ))
 	for i in $(seq 1 $_scl_last); do
 		if [ "$_scl_str" = "" ]; then
 			_scl_str="${!i}"

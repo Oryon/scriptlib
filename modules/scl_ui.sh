@@ -18,3 +18,8 @@ function scl_ask () {
 	read -p "$scl_ask" -r scl_ack_choice
 	echo $scl_ack_choice
 }
+
+function scl_e () {
+	echo $@
+	$@
+}

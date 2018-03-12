@@ -6,9 +6,15 @@ function scl_local_ip () {
 	echo $IP
 }
 
+function scl_create_ns () {
+	[ "$1" = "" ] && return 1
+	sudo ip netns add $1
+	sudo ip netns exec $1    ip link set lo up
+}
+
 function scl_wait_for_interface () {
 	local CMD="ip link show dev $1"
-	if [ "$1" != "" ]; then
+	if [ "$2" != "" ]; then
 		CMD="sudo ip netns exec $2 ip link show dev $1"
 	fi
 	until $CMD > /dev/null 2>&1
