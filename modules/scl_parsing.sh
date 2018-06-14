@@ -8,3 +8,7 @@ function scl_nawk() {
 	done
 	tail -n +2 "$2" | awk "$(echo "$1" | sed $SED)"
 }
+
+function scl_ian () {
+	[ "$1" -eq "$1" ] 2>/dev/null
+}
