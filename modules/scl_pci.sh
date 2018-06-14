@@ -8,7 +8,7 @@ function scl_pci_for_driver {
 	device=$(echo $vendor | sed 's/:/ /' | awk '{print $2}')
 	vendor=$(echo $vendor | sed 's/:/ /' | awk '{print $1}')
 	[ "$device" = "" -o "$vendor" = "" ] && echo "Device $pci not found" 1>&2 && return 1
-	echo "$vendor $device" | sudo tee "/sys/bus/pci/drivers/$driver/new_id" > /dev/null
+	echo "$vendor $device" | sudo tee "/sys/bus/pci/drivers/$driver/new_id" > /dev/null 2>&1 || true
 	if [ -e "/sys/bus/pci/devices/0000:${pci}/driver/unbind" ]; then
 		echo "0000:${pci}"     | sudo tee "/sys/bus/pci/devices/0000:${pci}/driver/unbind" > /dev/null
 	fi
