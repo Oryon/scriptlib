@@ -22,3 +22,18 @@ function scl_wait_for_interface () {
 		sleep 1
 	done
 }
+
+scl_load_module parsing #scl_ian
+function scl_find_available_ports () {
+	[ "$1" = "" ] && return 1
+	! scl_ian "$1" && return 2
+
+	__SCL_NS=""
+	[ "$2" != "" ] && __SCL_NS="sudo ip netns exec $2"
+
+	__SCL_LOW=$($__SCL_NS cat /proc/sys/net/ipv4/ip_local_port_range | awk '{ print $1}')
+	__SCL_HIGH=$($__SCL_NS cat /proc/sys/net/ipv4/ip_local_port_range | awk '{ print $2}')
+
+
+	comm -23 <(seq "$__SCL_LOW" "$__SCL_HIGH" | sort) <($__SCL_NS ss -tan | awk '{print $4}' | cut -d':' -f2 | grep '[0-9]\{1,5\}' | sort -u) | shuf | head -n "$1"
+}
