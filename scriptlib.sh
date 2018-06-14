@@ -31,9 +31,12 @@ function scl_usage () {
 	done
 }
 
+SCL_LOADED_MODULES=""
 function scl_load_module () {
 	[ "$1" = "" ] && echo "Missing argument" && return 1
 	[ ! -f "$SCRIPTLIB_DIR/modules/scl_$1.sh" ] && echo "'$1' module not found." && return 1
+	[ "$(echo $SCL_LOADED_MODULES | grep "$1")" != "" ] && return 0
+	SCL_LOADED_MODULES="$SCL_LOADED_MODULES $1"
 	. $SCRIPTLIB_DIR/modules/scl_$1.sh
 }
 
